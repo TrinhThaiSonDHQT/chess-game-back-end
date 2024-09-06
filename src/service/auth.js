@@ -3,21 +3,31 @@ import db from '../models/index.js';
 const bcrypt = require('bcryptjs');
 
 const checkEmail = async (email) => {
-  let user = await db.User.findOne({
-    where: { email: email },
-  });
+  try {
+    let user = await db.User.findOne({
+      where: { email: email },
+    });
 
-  if (user != null) return true;
-  return false;
+    if (user != null) return true;
+    return false;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
 };
 
 const checkUsername = async (username) => {
-  let user = await db.User.findOne({
-    where: { user_name: username },
-  });
+  try {
+    let user = await db.User.findOne({
+      where: { user_name: username },
+    });
 
-  if (user != null) return true;
-  return false;
+    if (user != null) return true;
+    return false;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
 };
 
 const checkPassword = (userInputPassword, hashedPassword) => {
@@ -39,7 +49,7 @@ const handleLogin = async (rawData) => {
         delete user.dataValues.password;
         delete user.dataValues.createdAt;
         delete user.dataValues.updatedAt;
-        
+
         return {
           EM: 'Login successfully',
           EC: 0,
@@ -122,7 +132,7 @@ const handleRegister = async (rawData) => {
   }
 };
 
-export default{
+export default {
   handleLogin,
   handleRegister,
 };
